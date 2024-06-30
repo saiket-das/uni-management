@@ -1,9 +1,7 @@
+import MainLayout from "./components/layout/MainLayout";
+
 function App() {
-  return (
-    <>
-      <h1>Uni Management</h1>
-    </>
-  );
+  return <MainLayout />;
 }
 
 export default App;
