@@ -1,19 +1,7 @@
-import { ReactNode } from "react";
+import { RouteProps, UserPathProps } from "../types";
 
-type RouteProps = {
-  path: string;
-  element: ReactNode;
-};
-
-type UserPathProps = {
-  name: string;
-  path?: string;
-  element?: ReactNode;
-  children?: UserPathProps[];
-};
-
-// Routes
-export const routesGenerator = (items: UserPathProps[]) => {
+// Routes generator
+export const routeGenerator = (items: UserPathProps[]) => {
   const routes = items.reduce((acc: RouteProps[], item) => {
     if (item.path && item.element) {
       acc.push({
@@ -30,6 +18,7 @@ export const routesGenerator = (items: UserPathProps[]) => {
         });
       });
     }
+
     return acc;
   }, []);
   return routes;
