@@ -3,11 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 type AuthStateProps = {
   user: null | object;
   token: null | string;
+  iat: null | Date;
+  exp: null | Date;
 };
 
 const initialState: AuthStateProps = {
   user: null,
   token: null,
+  iat: null,
+  exp: null,
 };
 
 const authSlice = createSlice({
