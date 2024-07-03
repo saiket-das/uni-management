@@ -4,9 +4,15 @@ import { useLoginMutation } from "../redux/features/auth/authApi";
 import { useAppDispatch } from "../redux/hooks";
 import { setUser } from "../redux/features/auth/authSlice";
 import { verifyToken } from "../utils/verifyToken";
+import { Navigate } from "react-router-dom";
+
+type LoginProps = {
+  id: string;
+  password: string;
+};
 
 const Login = () => {
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit } = useForm<LoginProps>({
     defaultValues: {
       id: "A-0001",
       password: "securepassword123",
@@ -15,11 +21,8 @@ const Login = () => {
   const [login] = useLoginMutation();
   const dispatch = useAppDispatch();
 
-  // console.log("Response: ", response);
-  // console.log("Error: ", error);
-
   // Submit data to login
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: LoginProps) => {
     const userInfo = {
       id: data.id,
       password: data.password,
@@ -27,15 +30,17 @@ const Login = () => {
     const res = await login(userInfo).unwrap();
     const token = res.data.accessToken;
 
-    // Decode token
+    // Decode token & set user info and user token in local storage
     const user = verifyToken(token);
-    // Set user and user token at local storage
+
     dispatch(
       setUser({
         user: user,
         token: res.data.accessToken,
       })
     );
+    console.log(user);
+    <Navigate to={`/dmin/dashboard`} replace={true} />;
   };
 
   return (
