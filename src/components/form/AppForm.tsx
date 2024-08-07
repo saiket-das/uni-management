@@ -9,17 +9,24 @@ import {
 
 type FormConfigProps = {
   defaultValues?: Record<string, string | number>;
+  resolver?: any;
 };
 type AppFormProps = {
   onSubmit: SubmitHandler<FieldValues>;
   children: ReactNode;
 } & FormConfigProps;
 
-const AppForm = ({ onSubmit, children, defaultValues }: AppFormProps) => {
+const AppForm = ({
+  onSubmit,
+  children,
+  defaultValues,
+  resolver,
+}: AppFormProps) => {
   const formConfig: FormConfigProps = {};
-  if (defaultValues) {
-    formConfig["defaultValues"] = defaultValues;
-  }
+
+  if (defaultValues) formConfig["defaultValues"] = defaultValues;
+  if (resolver) formConfig["resolver"] = resolver;
+
   const methods = useForm(formConfig);
 
   return (

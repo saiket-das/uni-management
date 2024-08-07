@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Register from "../pages/Register";
-import Login from "../pages/Login";
+import Login from "../pages/login/Login";
 import { adminPaths } from "./admin.routes";
 import { routeGenerator } from "../utils/routeGenerator";
 import { facultyPaths } from "./faculty.routes";

@@ -1,13 +1,13 @@
-import { Button, Row } from "antd";
+import { Button, Col, Flex } from "antd";
 import { FieldValues } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../redux/features/auth/authApi";
-import { useAppDispatch } from "../redux/hooks";
-import { setUser, UserProps } from "../redux/features/auth/authSlice";
-import { verifyToken } from "../utils/verifyToken";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { useAppDispatch } from "../../redux/hooks";
+import { setUser, UserProps } from "../../redux/features/auth/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
 import { toast } from "sonner";
-import AppForm from "../components/form/AppForm";
-import AppInput from "../components/form/AppInput";
+import AppForm from "../../components/form/AppForm";
+import AppInput from "../../components/form/AppInput";
 
 const Login = () => {
   const defaultValues = {
@@ -48,15 +48,19 @@ const Login = () => {
   };
 
   return (
-    <Row justify="center" align="middle" style={{ height: "100vh" }}>
-      <AppForm onSubmit={onSubmit} defaultValues={defaultValues}>
-        <AppInput type="text" name="id" label="User Id" />
-        <AppInput type="text" name="password" label="Password" />
-        <Button htmlType="submit" style={{ width: "100%" }}>
-          Login
-        </Button>
-      </AppForm>
-    </Row>
+    <Flex justify="center" align="center" style={{ height: "100vh" }}>
+      <Col span={8}>
+        {/* <Row justify="center" align="middle" style={{ height: "100vh" }}> */}
+        <AppForm onSubmit={onSubmit} defaultValues={defaultValues}>
+          <AppInput type="text" name="id" label="User Id" />
+          <AppInput type="text" name="password" label="Password" />
+          <Button htmlType="submit" style={{ width: "100%" }} size="large">
+            Login
+          </Button>
+        </AppForm>
+        {/* </Row> */}
+      </Col>
+    </Flex>
   );
 };
 

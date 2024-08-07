@@ -15,7 +15,7 @@ const AppSelect = ({ name, label, options }: AppSelecrProps) => {
   return (
     <Controller
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <Form.Item label={label}>
           <Select
             {...field}
@@ -23,6 +23,7 @@ const AppSelect = ({ name, label, options }: AppSelecrProps) => {
             options={options}
             size="large"
           />
+          {error && <small style={{ color: "red" }}> {error.message}</small>}
         </Form.Item>
       )}
     />
