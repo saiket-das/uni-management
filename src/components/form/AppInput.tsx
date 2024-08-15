@@ -1,4 +1,5 @@
-import { Input } from "antd";
+
+import { Form, Input } from "antd";
 import { Controller } from "react-hook-form";
 
 type AppInputProps = {
@@ -9,15 +10,15 @@ type AppInputProps = {
 
 const AppInput = ({ type, name, label }: AppInputProps) => {
   return (
-    <div style={{ marginBottom: 10 }}>
-      {label ? (
-        // <div style={{ marginBottom: 5 }}>
-        <label htmlFor={name}>{label}</label>
-      ) : // </div>
-      null}
+    <div style={{ marginBottom: "20px" }}>
       <Controller
         name={name}
-        render={({ field }) => <Input {...field} type={type} id={name} />}
+        render={({ field, fieldState: { error } }) => (
+          <Form.Item label={label}>
+            <Input {...field} type={type} id={name} size="large" />
+            {error && <small style={{ color: "red" }}> {error.message}</small>}
+          </Form.Item>
+        )}
       />
     </div>
   );
