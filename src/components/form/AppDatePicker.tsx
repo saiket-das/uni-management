@@ -1,32 +1,23 @@
-import { Form, Select } from "antd";
+import { DatePicker, Form } from "antd";
 import { Controller } from "react-hook-form";
 
-type AppSelectProps = {
+type AppDatePickerProps = {
   name: string;
   label?: string;
   placeholder?: string;
-  options:
-    | {
-        value: string;
-        label: string;
-        disabled?: boolean;
-      }[]
-    | undefined;
-  disabled?: boolean;
 };
 
-const AppSelect = ({ name, label, options, placeholder }: AppSelectProps) => {
+const AppDatePicker = ({ name, label, placeholder }: AppDatePickerProps) => {
   return (
     <div style={{ marginBottom: "20px" }}>
       <Controller
         name={name}
         render={({ field, fieldState: { error } }) => (
           <Form.Item label={label}>
-            <Select
+            <DatePicker
               {...field}
-              style={{ width: "100%" }}
-              options={options}
               size="large"
+              style={{ width: "100%" }}
               placeholder={placeholder}
             />
             {error && <small style={{ color: "red" }}> {error.message}</small>}
@@ -37,4 +28,4 @@ const AppSelect = ({ name, label, options, placeholder }: AppSelectProps) => {
   );
 };
 
-export default AppSelect;
+export default AppDatePicker;

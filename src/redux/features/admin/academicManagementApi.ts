@@ -1,5 +1,9 @@
 import { QueryParamProps, ResponseReduxProps } from "../../../types";
-import { AcademicSemesterProps } from "../../../types/academicManagement.types";
+import {
+  AcademicDepartmentProps,
+  AcademicFacultyProps,
+  AcademicSemesterProps,
+} from "../../../types/academicManagement.types";
 import { baseApi } from "../../api/baseApi";
 
 const academicManagementApi = baseApi.injectEndpoints({
@@ -28,7 +32,6 @@ const academicManagementApi = baseApi.injectEndpoints({
         };
       },
     }),
-
     createAcademicSemester: builder.mutation({
       query: (data) => ({
         url: "/academic-semesters/create-academic-semester",
@@ -36,10 +39,40 @@ const academicManagementApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+
+    getAcademicFaculties: builder.query({
+      query: () => {
+        return { url: "/academic-faculties", method: "GET" };
+      },
+      transformResponse: (
+        response: ResponseReduxProps<AcademicFacultyProps[]>
+      ) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
+
+    getAcademicDepartments: builder.query({
+      query: () => {
+        return { url: "/academic-departments", method: "GET" };
+      },
+      transformResponse: (
+        response: ResponseReduxProps<AcademicDepartmentProps[]>
+      ) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
   }),
 });
 
 export const {
   useGetAllAcademicSemestersQuery,
   useCreateAcademicSemesterMutation,
+  useGetAcademicFacultiesQuery,
+  useGetAcademicDepartmentsQuery,
 } = academicManagementApi;

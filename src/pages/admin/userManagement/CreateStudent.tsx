@@ -8,63 +8,92 @@ import {
   bloodOptions,
   genderOptions,
 } from "../../../types/userManagement.types";
+import AppDatePicker from "../../../components/form/AppDatePicker";
+import {
+  useGetAcademicDepartmentsQuery,
+  useGetAllAcademicSemestersQuery,
+} from "../../../redux/features/admin/academicManagementApi";
+import { toast } from "sonner";
 
-const studentDummyData = {
-  password: "defaultpass",
-  student: {
-    name: {
-      firstName: "Summer 2025",
-      lastName: "Eletrical Student",
-    },
-    gender: "male",
-    dateOfBirth: "2000-01-01",
-    bloodGroup: "O+",
+const studentDefaultValues = {
+  name: {
+    firstName: "Summer 2025",
+    lastName: "Eletrical Student",
+  },
+  gender: "male",
+  bloodGroup: "O+",
 
-    email: "summer.student.eletrical.2025@example.com",
-    contactNumber: "1234567890",
-    emergencyContactNumber: "0987654321",
+  email: "summer.student.eletrical.2025@example.com",
+  contactNumber: "1234567890",
+  emergencyContactNumber: "0987654321",
 
-    presentAddress: "123 Main St, Anytown, USA",
-    permanentAddress: "456 Elm St, Hometown, USA",
+  presentAddress: "123 Main St, Anytown, USA",
+  permanentAddress: "456 Elm St, Hometown, USA",
 
-    guardian: {
-      fatherName: "Robert Doe",
-      fatherOccupation: "Engineer",
-      fatherContactNo: "1234567890",
-      motherName: "Jane Doe",
-      motherOccupation: "Teacher",
-      motherContactNo: "0987654321",
-    },
+  guardian: {
+    fatherName: "Robert Doe",
+    fatherOccupation: "Engineer",
+    fatherContactNo: "1234567890",
+    motherName: "Jane Doe",
+    motherOccupation: "Teacher",
+    motherContactNo: "0987654321",
+  },
 
-    localGuardian: {
-      name: "Uncle Bob",
-      occupation: "Doctor",
-      contactNo: "1112223333",
-      address: "789 Pine St, Nearbytown, USA",
-    },
-
-    admissionSemester: "667734c8079fbb6ebe6944e0",
-    academicDepartment: "66775c24289034524bad8574",
+  localGuardian: {
+    name: "Uncle Bob",
+    occupation: "Doctor",
+    contactNo: "1112223333",
+    address: "789 Pine St, Nearbytown, USA",
   },
 };
 
 const CreateStudent = () => {
   const [createStudent, { isLoading }] = useCreateStudentMutation();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const { data: semesterData, isLoading: semesterLoading } =
+    useGetAllAcademicSemestersQuery(undefined);
+  const { data: departmentData, isLoading: departmentLoading } =
+    useGetAcademicDepartmentsQuery(undefined);
 
-    // const formData = new FormData();
-    // formData.append("data", JSON.stringify(data));
+  const semesterOptions = semesterData?.data?.map((item) => ({
+    value: item._id,
+    label: `${item.name} ${item.year}`,
+  }));
+
+  const departmentOptions = departmentData?.data?.map((item) => ({
+    value: item._id,
+    label: item.name,
+  }));
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Loading...");
+
+    const formData = new FormData();
+    const studenData = {
+      password: "defaultpass",
+      student: data,
+    };
+    formData.append("data", JSON.stringify(studenData));
     //! This is for development
     // console.log(Object.fromEntries(formData));
-    // await createStudent({});
+
+    try {
+      const res = await createStudent(formData);
+      console.log(res);
+      if (res.error) {
+        toast.error(res?.error?.data?.message, { id: toastId });
+      } else {
+        toast.success("Semester created", { id: toastId, duration: 2000 });
+      }
+    } catch (err) {
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+    }
   };
   return (
     <Flex justify="center" align="center">
       <Col span={24}>
         <AppForm
           onSubmit={onSubmit}
+          defaultValues={studentDefaultValues}
           // resolver={zodResolver(academicSemesterValidationSchema)}
         >
           <Row gutter={[16, 0]}>
@@ -94,8 +123,7 @@ const CreateStudent = () => {
               />
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
-              <AppInput
-                type="text"
+              <AppDatePicker
                 name="dateOfBirth"
                 label="Date of birth"
                 placeholder="Enter your date of birth"
@@ -140,15 +168,15 @@ const CreateStudent = () => {
             <Col span={24}>
               <AppInput
                 type="text"
-                name="guardian.presentAddress"
-                label="present address"
+                name="presentAddress"
+                label="Present address"
                 placeholder="Enter your Present address"
               />
             </Col>
             <Col span={24}>
               <AppInput
                 type="text"
-                name="guardian.permanentAddress"
+                name="permanentAddress"
                 label="Permanent address"
                 placeholder="Enter your permanent address"
               />
@@ -237,6 +265,26 @@ const CreateStudent = () => {
                 name="localGuardian.address"
                 label="Local guardian address"
                 placeholder="Enter your mother local guardian's address"
+              />
+            </Col>
+
+            <Divider>Academic Info</Divider>
+            <Col span={24} lg={{ span: 12 }} md={{ span: 12 }}>
+              <AppSelect
+                options={semesterOptions}
+                disabled={semesterLoading}
+                name="admissionSemester"
+                label="Admission Semester"
+                placeholder="Choose your admission semester"
+              />
+            </Col>
+            <Col span={24} lg={{ span: 12 }} md={{ span: 12 }}>
+              <AppSelect
+                options={departmentOptions}
+                disabled={departmentLoading}
+                name="academicDepartment"
+                label="Academic department"
+                placeholder="Choose your academic department"
               />
             </Col>
           </Row>
