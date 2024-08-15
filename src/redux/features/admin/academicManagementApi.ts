@@ -1,3 +1,5 @@
+import { ResponseReduxProps } from "../../../types";
+import { AcademicSemesterProps } from "../../../types/academicManagement.types";
 import { baseApi } from "../../api/baseApi";
 
 const academicManagementApi = baseApi.injectEndpoints({
@@ -7,7 +9,9 @@ const academicManagementApi = baseApi.injectEndpoints({
         url: "/academic-semesters",
         method: "GET",
       }),
-      transformResponse: (response) => {
+      transformResponse: (
+        response: ResponseReduxProps<AcademicSemesterProps[]>
+      ) => {
         return {
           data: response.data,
           meta: response.meta,

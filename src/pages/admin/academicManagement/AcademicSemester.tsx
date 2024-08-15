@@ -3,7 +3,7 @@ import { useGetAllAcademicSemestersQuery } from "../../../redux/features/admin/a
 import { AcademicSemesterProps } from "../../../types/academicManagement.types";
 
 interface DataType {
-  key: React.Key;
+  // key: React.Key;
   name: string;
   year: string;
   startMonth: string;
@@ -12,17 +12,19 @@ interface DataType {
 
 const AcademicSemester = () => {
   const { data: semesterData } = useGetAllAcademicSemestersQuery(undefined);
-  console.log(semesterData);
+  const tableData =
+    semesterData?.data &&
+    semesterData?.data.map(
+      ({ _id, name, year, startMonth, endMonth }: AcademicSemesterProps) => ({
+        key: _id,
+        _id,
+        name,
+        year,
+        startMonth,
+        endMonth,
+      })
+    );
 
-  const tableData = semesterData?.data.map(
-    ({ _id, name, year, startMonth, endMonth }: AcademicSemesterProps) => ({
-      _id,
-      name,
-      year,
-      startMonth,
-      endMonth,
-    })
-  );
   const columns: TableColumnsType<DataType> = [
     {
       title: "Name",
