@@ -25,3 +25,8 @@ export type ResponseProps<T> = {
 };
 
 export type ResponseReduxProps<T> = ResponseProps<T> & BaseQueryApi;
+
+export type QueryParamProps = {
+  name: string;
+  value: boolean | React.Key;
+};

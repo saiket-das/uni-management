@@ -1,4 +1,4 @@
-import { ResponseReduxProps } from "../../../types";
+import { QueryParamProps, ResponseReduxProps } from "../../../types";
 import { AcademicSemesterProps } from "../../../types/academicManagement.types";
 import { baseApi } from "../../api/baseApi";
 
@@ -8,8 +8,8 @@ const academicManagementApi = baseApi.injectEndpoints({
       query: (args) => {
         const params = new URLSearchParams();
         if (args) {
-          args.forEach((item) => {
-            params.append(item.name, item.value);
+          args.forEach((item: QueryParamProps) => {
+            params.append(item.name, item.value as string);
           });
         }
 
