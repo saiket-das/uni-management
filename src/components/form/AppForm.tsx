@@ -18,6 +18,7 @@ type AppFormProps = {
   children: ReactNode;
 } & FormConfigProps;
 
+
 const AppForm = ({
   onSubmit,
   children,
@@ -29,13 +30,22 @@ const AppForm = ({
   if (defaultValues) formConfig["defaultValues"] = defaultValues;
   if (resolver) formConfig["resolver"] = resolver;
 
+
+const AppForm = ({ onSubmit, children, defaultValues }: AppFormProps) => {
+  const formConfig: FormConfigProps = {};
+  if (defaultValues) {
+    formConfig["defaultValues"] = defaultValues;
+  }
+
   const methods = useForm(formConfig);
 
   return (
     <FormProvider {...methods}>
+
       <Form layout="vertical" onFinish={methods.handleSubmit(onSubmit)}>
         {children}
       </Form>
+
     </FormProvider>
   );
 };
