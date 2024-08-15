@@ -21,7 +21,6 @@ const Login = () => {
 
   // Submit data to login
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
     const toastId = toast.loading("Loggin in");
     try {
       const userInfo = {
@@ -29,7 +28,6 @@ const Login = () => {
         password: data.password,
       };
       const res = await login(userInfo).unwrap();
-
       // Decode token & set user info and user token in local storage
       const token = res.data.accessToken;
       const user = verifyToken(token) as UserProps;

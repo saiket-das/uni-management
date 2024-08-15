@@ -9,6 +9,7 @@ import { monthOptions } from "../../../constants/global";
 import { useCreateAcademicSemesterMutation } from "../../../redux/features/admin/academicManagementApi";
 import { academicSemesterValidationSchema } from "../../../schemas/academicManagementValidationSchema";
 import { ResponseProps } from "../../../types";
+import { AcademicSemesterProps } from "../../../types/academicManagement.types";
 
 const currentYear = new Date().getFullYear();
 const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
@@ -17,7 +18,8 @@ const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
 }));
 
 const CreateAcademicSemester = () => {
-  const [createAcademicSemester] = useCreateAcademicSemesterMutation();
+  const [createAcademicSemester, { isLoading }] =
+    useCreateAcademicSemesterMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Loading...");
@@ -32,8 +34,9 @@ const CreateAcademicSemester = () => {
     };
 
     try {
-      const res = (await createAcademicSemester(semesterData)) as ResponseProps;
-      console.log(res);
+      const res = (await createAcademicSemester(
+        semesterData
+      )) as ResponseProps<AcademicSemesterProps>;
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
@@ -59,8 +62,14 @@ const CreateAcademicSemester = () => {
             options={monthOptions}
           />
           <AppSelect name="endMonth" label="End month" options={monthOptions} />
-          <Button htmlType="submit" style={{ width: "100%" }} size="large">
-            Submit
+          <Button
+            htmlType="submit"
+            style={{ width: "100%" }}
+            size="large"
+            loading={isLoading}
+            iconPosition="start"
+          >
+            {isLoading ? "Loading..." : "Submit"}
           </Button>
         </AppForm>
       </Col>
