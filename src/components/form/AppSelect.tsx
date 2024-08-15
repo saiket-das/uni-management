@@ -4,6 +4,7 @@ import { Controller } from "react-hook-form";
 type AppSelecrProps = {
   name: string;
   label?: string;
+  placeholder?: string;
   options: {
     value: string;
     label: string;
@@ -11,7 +12,7 @@ type AppSelecrProps = {
   }[];
 };
 
-const AppSelect = ({ name, label, options }: AppSelecrProps) => {
+const AppSelect = ({ name, label, options, placeholder }: AppSelecrProps) => {
   return (
     <Controller
       name={name}
@@ -22,6 +23,7 @@ const AppSelect = ({ name, label, options }: AppSelecrProps) => {
             style={{ width: "100%" }}
             options={options}
             size="large"
+            placeholder={placeholder}
           />
           {error && <small style={{ color: "red" }}> {error.message}</small>}
         </Form.Item>

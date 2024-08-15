@@ -50,8 +50,18 @@ const Login = () => {
       <Col span={8}>
         {/* <Row justify="center" align="middle" style={{ height: "100vh" }}> */}
         <AppForm onSubmit={onSubmit} defaultValues={defaultValues}>
-          <AppInput type="text" name="id" label="User Id" />
-          <AppInput type="text" name="password" label="Password" />
+          <AppInput
+            type="text"
+            name="id"
+            label="User ID"
+            placeholder="Enter your user Id"
+          />
+          <AppInput
+            type="text"
+            name="password"
+            label="Password"
+            placeholder="Enter your password"
+          />
           <Button htmlType="submit" style={{ width: "100%" }} size="large">
             Login
           </Button>
