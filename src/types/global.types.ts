@@ -1,3 +1,5 @@
+import { BaseQueryApi } from "@reduxjs/toolkit/query";
+
 export type ErrorProps = {
   data: {
     message: string;
@@ -20,4 +22,11 @@ export type ResponseProps<T> = {
   meta?: MetaProps;
   success: boolean;
   message: string;
+};
+
+export type ResponseReduxProps<T> = ResponseProps<T> & BaseQueryApi;
+
+export type QueryParamProps = {
+  name: string;
+  value: boolean | React.Key;
 };

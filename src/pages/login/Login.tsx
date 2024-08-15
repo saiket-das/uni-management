@@ -21,7 +21,6 @@ const Login = () => {
 
   // Submit data to login
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
     const toastId = toast.loading("Loggin in");
     try {
       const userInfo = {
@@ -29,7 +28,6 @@ const Login = () => {
         password: data.password,
       };
       const res = await login(userInfo).unwrap();
-
       // Decode token & set user info and user token in local storage
       const token = res.data.accessToken;
       const user = verifyToken(token) as UserProps;
@@ -52,8 +50,18 @@ const Login = () => {
       <Col span={8}>
         {/* <Row justify="center" align="middle" style={{ height: "100vh" }}> */}
         <AppForm onSubmit={onSubmit} defaultValues={defaultValues}>
-          <AppInput type="text" name="id" label="User Id" />
-          <AppInput type="text" name="password" label="Password" />
+          <AppInput
+            type="text"
+            name="id"
+            label="User ID"
+            placeholder="Enter your user Id"
+          />
+          <AppInput
+            type="text"
+            name="password"
+            label="Password"
+            placeholder="Enter your password"
+          />
           <Button htmlType="submit" style={{ width: "100%" }} size="large">
             Login
           </Button>

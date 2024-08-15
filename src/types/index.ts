@@ -1,2 +1,2 @@
-export * from "./global";
+export * from "./global.types";
 export * from "./sidebar.types";

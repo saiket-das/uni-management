@@ -1,26 +1,23 @@
-
-import { Form, Input } from "antd";
+import { DatePicker, Form } from "antd";
 import { Controller } from "react-hook-form";
 
-type AppInputProps = {
-  type: string;
+type AppDatePickerProps = {
   name: string;
   label?: string;
   placeholder?: string;
 };
 
-const AppInput = ({ type, name, label, placeholder }: AppInputProps) => {
+const AppDatePicker = ({ name, label, placeholder }: AppDatePickerProps) => {
   return (
     <div style={{ marginBottom: "20px" }}>
       <Controller
         name={name}
         render={({ field, fieldState: { error } }) => (
           <Form.Item label={label}>
-            <Input
+            <DatePicker
               {...field}
-              type={type}
-              id={name}
               size="large"
+              style={{ width: "100%" }}
               placeholder={placeholder}
             />
             {error && <small style={{ color: "red" }}> {error.message}</small>}
@@ -31,4 +28,4 @@ const AppInput = ({ type, name, label, placeholder }: AppInputProps) => {
   );
 };
 
-export default AppInput;
+export default AppDatePicker;

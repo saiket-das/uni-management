@@ -9,3 +9,19 @@ export type AcademicSemesterProps = {
   updatedAt: string;
   __v: number;
 };
+
+export type AcademicFacultyProps = {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+export type AcademicDepartmentProps = {
+  _id: string;
+  name: string;
+  academicFaculty: AcademicFacultyProps;
+  createdAt: string;
+  updatedAt: string;
+};
