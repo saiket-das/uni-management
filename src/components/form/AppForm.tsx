@@ -8,7 +8,9 @@ import {
 } from "react-hook-form";
 
 type FormConfigProps = {
-  defaultValues?: Record<string, string | number>;
+  // defaultValues?: Record<string, string | number>;
+  // resolver?: any;
+  defaultValues?: Record<string, any>;
   resolver?: any;
 };
 type AppFormProps = {
