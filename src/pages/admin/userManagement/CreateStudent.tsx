@@ -4,16 +4,14 @@ import AppForm from "../../../components/form/AppForm";
 import AppSelect from "../../../components/form/AppSelect";
 import AppInput from "../../../components/form/AppInput";
 import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
-import {
-  bloodOptions,
-  genderOptions,
-} from "../../../types/userManagement.types";
 import AppDatePicker from "../../../components/form/AppDatePicker";
 import {
   useGetAcademicDepartmentsQuery,
   useGetAllAcademicSemestersQuery,
 } from "../../../redux/features/admin/academicManagementApi";
 import { toast } from "sonner";
+import { genderOptions } from "../../../constants/gender";
+import { bloodGroupOptions } from "../../../constants/bloodGroup";
 
 const studentDefaultValues = {
   name: {
@@ -154,7 +152,7 @@ const CreateStudent = () => {
               <AppSelect
                 name="bloodGroup"
                 label="Blood group"
-                options={bloodOptions}
+                options={bloodGroupOptions}
                 placeholder="Choose your blood group"
               />
             </Col>
