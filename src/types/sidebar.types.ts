@@ -12,8 +12,10 @@ export type RouteProps = {
   element: ReactNode;
 };
 
-export type SidebarItemProps = {
-  key: string;
-  label: ReactNode;
-  children?: SidebarItemProps[];
-};
+export type SidebarItemProps =
+  | {
+      key: string;
+      label: ReactNode;
+      children?: SidebarItemProps[];
+    }
+  | undefined;

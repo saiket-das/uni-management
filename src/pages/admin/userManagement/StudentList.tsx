@@ -14,6 +14,7 @@ import { NameProps, StudentProps } from "../../../types/userManagement.types";
 import { DeleteOutlined } from "@ant-design/icons";
 import { AcademicDepartmentProps } from "../../../types/academicManagement.types";
 import { Link } from "react-router-dom";
+import AppModal from "../../../components/ui/AppModal";
 
 type TableDataProps = Pick<
   StudentProps,
@@ -110,9 +111,16 @@ const StudentList = () => {
             <Link to={item._id}>
               <Button>Update</Button>
             </Link>
-            <Button danger>
+            {/* <Button >
               <DeleteOutlined />
-            </Button>
+            </Button> */}
+
+            <AppModal
+              title="Are you sure?"
+              content="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
+              triggerText={<DeleteOutlined />}
+              onOk={handleDelete}
+            />
           </Space>
         );
       },
@@ -137,6 +145,10 @@ const StudentList = () => {
 
       setParams(queryParams);
     }
+  };
+
+  const handleDelete = () => {
+    console.log("handle delete clicked");
   };
 
   return (
