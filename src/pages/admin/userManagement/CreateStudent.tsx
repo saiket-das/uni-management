@@ -12,6 +12,8 @@ import {
 import { toast } from "sonner";
 import { genderOptions } from "../../../constants/gender";
 import { bloodGroupOptions } from "../../../constants/bloodGroup";
+import { ResponseProps } from "../../../types";
+import { StudentProps } from "../../../types/userManagement.types";
 
 const studentDefaultValues = {
   name: {
@@ -65,7 +67,6 @@ const CreateStudent = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Loading...");
 
-    // console.log(data);
     const formData = new FormData();
     const studenData = {
       password: "defaultpass",
@@ -77,7 +78,9 @@ const CreateStudent = () => {
     // console.log(Object.fromEntries(formData));
 
     try {
-      const res = await createStudent(formData);
+      const res = (await createStudent(
+        formData
+      )) as ResponseProps<StudentProps>;
       console.log(res);
       if (res.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
