@@ -75,3 +75,20 @@ export interface FacultyProps {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface AdminProps {
+  id: string;
+  name: NameProps;
+  email: string;
+  gender: string;
+  dateOfBirth: string;
+  contactNumber: string;
+  emergencyContactNumber: string;
+  presentAddress: string;
+  permanentAddress: string;
+  bloodGroup: string;
+  profileImage: string;
+  managementDepartment: string;
+  createdAt: string;
+  updatedAt: string;
+}
