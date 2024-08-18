@@ -1,9 +1,9 @@
-import { Button, Col, Divider, Flex, Row } from "antd";
+import { Button, Col, Divider, Flex, Form, Input, Row } from "antd";
 import { useCreateStudentMutation } from "../../../redux/features/admin/userManagementApi";
 import AppForm from "../../../components/form/AppForm";
 import AppSelect from "../../../components/form/AppSelect";
 import AppInput from "../../../components/form/AppInput";
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
 import {
   bloodOptions,
   genderOptions,
@@ -67,12 +67,14 @@ const CreateStudent = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Loading...");
 
+    // console.log(data);
     const formData = new FormData();
     const studenData = {
       password: "defaultpass",
       student: data,
     };
     formData.append("data", JSON.stringify(studenData));
+    formData.append("file", data.image);
     //! This is for development
     // console.log(Object.fromEntries(formData));
 
@@ -82,7 +84,10 @@ const CreateStudent = () => {
       if (res.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {
-        toast.success("Semester created", { id: toastId, duration: 2000 });
+        toast.success("Student created successfully!", {
+          id: toastId,
+          duration: 2000,
+        });
       }
     } catch (err) {
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
@@ -120,6 +125,22 @@ const CreateStudent = () => {
                 label="Gender"
                 options={genderOptions}
                 placeholder="Choose your gender"
+              />
+            </Col>
+            <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
+              <Controller
+                name="image"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <Form.Item label="Your photo">
+                    <Input
+                      type="file"
+                      value={value?.fileName}
+                      size="large"
+                      {...field}
+                      onChange={(e) => onChange(e.target.files?.[0])}
+                    />
+                  </Form.Item>
+                )}
               />
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
