@@ -56,7 +56,22 @@ export interface StudentProps {
   admissionSemester: AcademicSemesterProps;
   academicDepartment: AcademicDepartmentProps;
   academicFaculty: AcademicFacultyProps;
-  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FacultyProps {
+  name: NameProps;
+  email: string;
+  gender: string;
+  dateOfBirth: string;
+  contactNumber: string;
+  emergencyContactNumber: string;
+  presentAddress: string;
+  permanentAddress: string;
+  bloodGroup: string;
+  academicFaculty: string;
+  academicDepartment: string;
   createdAt: string;
   updatedAt: string;
 }

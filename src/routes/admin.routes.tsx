@@ -70,14 +70,14 @@ export const adminPaths = [
         element: <StudentDetails />,
       },
       {
-        name: "Create Admin",
-        path: "create-admin",
-        element: <CreateAdmin />,
-      },
-      {
         name: "Create Faculty",
         path: "create-faculty",
         element: <CreateFaculty />,
+      },
+      {
+        name: "Create Admin",
+        path: "create-admin",
+        element: <CreateAdmin />,
       },
     ],
   },

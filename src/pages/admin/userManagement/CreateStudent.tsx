@@ -64,6 +64,8 @@ const CreateStudent = () => {
     value: item._id,
     label: item.name,
   }));
+
+  // Create a new student func
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Loading...");
 
@@ -94,6 +96,7 @@ const CreateStudent = () => {
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
     }
   };
+
   return (
     <Flex justify="center" align="center">
       <Col span={24}>
