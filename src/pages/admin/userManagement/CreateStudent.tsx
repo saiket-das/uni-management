@@ -67,7 +67,7 @@ const CreateStudent = () => {
 
   // Create a new student func
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const toastId = toast.loading("Loading...");
+    const toastId = "create a new student";
 
     const formData = new FormData();
     const studenData = {
@@ -98,7 +98,7 @@ const CreateStudent = () => {
   };
 
   return (
-    <Flex justify="center" align="center">
+    <Flex justify="center" align="center" style={{ paddingBottom: "20px" }}>
       <Col span={24}>
         <AppForm
           onSubmit={onSubmit}

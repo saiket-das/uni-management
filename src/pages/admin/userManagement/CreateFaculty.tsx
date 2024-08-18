@@ -1,11 +1,11 @@
-import { Button, Col, Divider, Flex, Row } from "antd";
+import { Button, Col, Divider, Flex, Form, Input, Row } from "antd";
 import AppForm from "../../../components/form/AppForm";
 import AppSelect from "../../../components/form/AppSelect";
 import AppInput from "../../../components/form/AppInput";
 import { FacultyProps } from "../../../types/userManagement.types";
 import { toast } from "sonner";
 import { ResponseProps } from "../../../types";
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
 import AppDatePicker from "../../../components/form/AppDatePicker";
 import { bloodGroupOptions } from "../../../constants/bloodGroup";
 import {
@@ -33,9 +33,9 @@ const CreateFaculty = () => {
     label: item.name,
   }));
 
-  // Create a new student func
+  // Create a new faculty func
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const toastId = "create a new student";
+    const toastId = "create a new faculty";
 
     const formData = new FormData();
     const studenData = {
@@ -78,7 +78,7 @@ const CreateFaculty = () => {
   };
 
   return (
-    <Flex justify="center" align="center">
+    <Flex justify="center" align="center" style={{ paddingBottom: "20px" }}>
       <Col span={24}>
         <AppForm
           onSubmit={onSubmit}
@@ -109,6 +109,22 @@ const CreateFaculty = () => {
                 label="Gender"
                 options={genderOptions}
                 placeholder="Choose your gender"
+              />
+            </Col>
+            <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
+              <Controller
+                name="image"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <Form.Item label="Your photo">
+                    <Input
+                      type="file"
+                      value={value?.fileName}
+                      size="large"
+                      {...field}
+                      onChange={(e) => onChange(e.target.files?.[0])}
+                    />
+                  </Form.Item>
+                )}
               />
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
