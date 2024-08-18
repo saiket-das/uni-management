@@ -7,14 +7,18 @@ import {
   TableColumnsType,
   TableProps,
 } from "antd";
-import { QueryParamProps } from "../../../types";
+import { QueryParamProps, ResponseProps } from "../../../types";
 import { useState } from "react";
-import { useGetAllStudentsQuery } from "../../../redux/features/admin/userManagementApi";
+import {
+  useDeleteStudentByIdMutation,
+  useGetAllStudentsQuery,
+} from "../../../redux/features/admin/userManagementApi";
 import { NameProps, StudentProps } from "../../../types/userManagement.types";
 import { DeleteOutlined } from "@ant-design/icons";
 import { AcademicDepartmentProps } from "../../../types/academicManagement.types";
 import { Link } from "react-router-dom";
 import AppModal from "../../../components/ui/AppModal";
+import { toast } from "sonner";
 
 type TableDataProps = Pick<
   StudentProps,
@@ -25,12 +29,40 @@ const StudentList = () => {
   const [params, setParams] = useState<QueryParamProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: studentsData, isFetching } = useGetAllStudentsQuery([
+  const {
+    data: studentsData,
+    isFetching,
+    refetch,
+  } = useGetAllStudentsQuery([
     { name: "limit", value: 2 },
     { name: "page", value: currentPage },
     { name: "sort", value: "id" },
     ...params,
   ]);
+
+  // Delete a student
+  const [deleteStudent, { isLoading: deleteStudentLoading }] =
+    useDeleteStudentByIdMutation();
+
+  const handleDelete = async (studentId: string) => {
+    const toastId = "delete a student";
+    try {
+      const res = (await deleteStudent(
+        studentId
+      )) as ResponseProps<StudentProps>;
+      if (res.error) {
+        toast.error(res?.error?.data?.message, { id: toastId });
+      } else {
+        refetch();
+        toast.success("Student deleted successfully!", {
+          id: toastId,
+          duration: 2000,
+        });
+      }
+    } catch (err) {
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+    }
+  };
 
   const metaData = studentsData?.meta;
 
@@ -119,7 +151,7 @@ const StudentList = () => {
               title="Are you sure?"
               content="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
               triggerText={<DeleteOutlined />}
-              onOk={handleDelete}
+              onOk={() => handleDelete(item._id)}
             />
           </Space>
         );
@@ -147,14 +179,10 @@ const StudentList = () => {
     }
   };
 
-  const handleDelete = () => {
-    console.log("handle delete clicked");
-  };
-
   return (
     <>
       <Table
-        loading={isFetching}
+        loading={isFetching || deleteStudentLoading}
         columns={columns}
         dataSource={tableData}
         onChange={onChange}
