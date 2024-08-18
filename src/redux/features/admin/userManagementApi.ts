@@ -12,6 +12,14 @@ const userManagementApi = baseApi.injectEndpoints({
       }),
     }),
 
+    createFaculty: builder.mutation({
+      query: (data) => ({
+        url: "/users/create-faculty",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     getAllStudents: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -53,6 +61,7 @@ const userManagementApi = baseApi.injectEndpoints({
 
 export const {
   useCreateStudentMutation,
+  useCreateFacultyMutation,
   useGetAllStudentsQuery,
   useGetStudentByIdQuery,
   useDeleteStudentByIdMutation,
