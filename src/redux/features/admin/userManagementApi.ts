@@ -41,6 +41,13 @@ const userManagementApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    deleteStudentById: builder.mutation({
+      query: (studentId) => ({
+        url: `/students/${studentId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -48,4 +55,5 @@ export const {
   useCreateStudentMutation,
   useGetAllStudentsQuery,
   useGetStudentByIdQuery,
+  useDeleteStudentByIdMutation,
 } = userManagementApi;
