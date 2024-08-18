@@ -1,5 +1,6 @@
 import {
   Button,
+  Flex,
   Pagination,
   Space,
   Table,
@@ -11,10 +12,12 @@ import { useState } from "react";
 import { useGetAllStudentsQuery } from "../../../redux/features/admin/userManagementApi";
 import { NameProps, StudentProps } from "../../../types/userManagement.types";
 import { DeleteOutlined } from "@ant-design/icons";
+import { AcademicDepartmentProps } from "../../../types/academicManagement.types";
+import { Link } from "react-router-dom";
 
 type TableDataProps = Pick<
   StudentProps,
-  "name" | "id" | "email" | "gender" | "bloodGroup"
+  "name" | "id" | "email" | "gender" | "bloodGroup" | "contactNumber"
 >;
 
 const StudentList = () => {
@@ -33,7 +36,16 @@ const StudentList = () => {
   const tableData =
     studentsData?.data &&
     studentsData?.data?.map(
-      ({ _id, name, id, email, gender, bloodGroup }: StudentProps) => ({
+      ({
+        _id,
+        name,
+        id,
+        email,
+        gender,
+        bloodGroup,
+        contactNumber,
+        academicDepartment,
+      }: StudentProps) => ({
         key: _id,
         _id,
         name,
@@ -41,6 +53,8 @@ const StudentList = () => {
         email,
         gender,
         bloodGroup,
+        contactNumber,
+        academicDepartment,
       })
     );
 
@@ -71,19 +85,31 @@ const StudentList = () => {
         `${gender.charAt(0).toUpperCase() + gender.slice(1)}`,
     },
     {
-      title: "Blood group",
-      key: "bloodGroup",
-      dataIndex: "bloodGroup",
+      title: "Contact number",
+      key: "contactNumber",
+      dataIndex: "contactNumber",
+      render: (contactNumber: string) => `+60-${contactNumber}`,
+    },
+    {
+      title: "A cademic department",
+      key: "academicDepartment",
+      dataIndex: "academicDepartment",
+      render: (department: AcademicDepartmentProps) => `${department.name}`,
     },
     {
       title: "Action",
       key: "X",
       width: "1%",
-      render: () => {
+      render: (item) => {
         return (
           <Space>
-            <Button>Details</Button>
-            <Button>Update</Button>
+            <Link to={`/admin/students/${item.key}`}>
+              <Button>Details</Button>
+            </Link>
+
+            <Link to={item._id}>
+              <Button>Update</Button>
+            </Link>
             <Button danger>
               <DeleteOutlined />
             </Button>
@@ -122,13 +148,16 @@ const StudentList = () => {
         onChange={onChange}
         showSorterTooltip={{ target: "sorter-icon" }}
         pagination={false}
+        style={{ paddingBottom: "20px" }}
       />
-      <Pagination
-        onChange={(page) => setCurrentPage(page)}
-        current={currentPage}
-        pageSize={metaData?.limit}
-        total={metaData?.total}
-      />
+      <Flex align="center" vertical>
+        <Pagination
+          onChange={(page) => setCurrentPage(page)}
+          current={currentPage}
+          pageSize={metaData?.limit}
+          total={metaData?.total}
+        />
+      </Flex>
     </>
   );
 };
