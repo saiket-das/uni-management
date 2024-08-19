@@ -1,4 +1,9 @@
-import { AcademicSemesterProps } from "./academicManagement.types";
+import {
+  AcademicDepartmentProps,
+  AcademicFacultyProps,
+  AcademicSemesterProps,
+} from "./academicManagement.types";
+import { FacultyProps } from "./userManagement.types";
 
 export interface SemesterResgistrationProps {
   _id: string;
@@ -22,4 +27,17 @@ export interface CourseProps {
 
 export interface PreRequisiteCourseProps {
   course: string;
+}
+
+export interface OfferedCourseProps {
+  semesterRegistration: SemesterResgistrationProps;
+  academicFaculty: AcademicFacultyProps;
+  academicDepartment: AcademicDepartmentProps;
+  course: CourseProps;
+  faculty: FacultyProps;
+  section: string;
+  days: string[];
+  maxCapacity: number;
+  startTime: string;
+  endTime: string;
 }
