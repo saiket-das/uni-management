@@ -5,13 +5,12 @@ import { toast } from "sonner";
 
 import { useCreateAcademicSemesterMutation } from "../../../redux/features/admin/academicManagementApi";
 import { academicSemesterValidationSchema } from "../../../schemas/academicManagementValidationSchema";
-import { nameOptions } from "../../../constants/semester";
+import { semesterNameOption } from "../../../constants/semester";
 import { monthOptions } from "../../../constants/global";
 import { ResponseProps } from "../../../types";
 import { AcademicSemesterProps } from "../../../types/academicManagement.types";
 import AppForm from "../../../components/form/AppForm";
 import AppSelect from "../../../components/form/AppSelect";
-
 
 const currentYear = new Date().getFullYear();
 const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
@@ -26,7 +25,7 @@ const CreateAcademicSemester = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Loading...");
 
-    const name = nameOptions[Number(data?.name) - 1]?.label;
+    const name = semesterNameOption[Number(data?.name) - 1]?.label;
     const semesterData = {
       name,
       code: data.name,
@@ -56,7 +55,7 @@ const CreateAcademicSemester = () => {
           onSubmit={onSubmit}
           resolver={zodResolver(academicSemesterValidationSchema)}
         >
-          <AppSelect name="name" label="Name" options={nameOptions} />
+          <AppSelect name="name" label="Name" options={semesterNameOption} />
           <AppSelect name="year" label="Year" options={yearOptions} />
           <AppSelect
             name="startMonth"
