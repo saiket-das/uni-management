@@ -61,6 +61,7 @@ export interface StudentProps {
 }
 
 export interface FacultyProps {
+  _id: string;
   name: NameProps;
   email: string;
   gender: string;
