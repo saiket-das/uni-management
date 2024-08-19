@@ -21,10 +21,11 @@ const Courses = () => {
   const { data: courseData, isFetching: getCourseFetching } =
     useGetAllCoursesQuery(undefined);
   const tableData = courseData?.data?.map(
-    ({ _id, title, prefix, code }: CourseProps) => ({
+    ({ _id, title, prefix, code, credits }: CourseProps) => ({
       key: _id,
       title,
       code: `${prefix}${code}`,
+      credits,
     })
   );
 

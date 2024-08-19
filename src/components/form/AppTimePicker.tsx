@@ -1,34 +1,25 @@
-import { Form, Input } from "antd";
+import { Form, TimePicker } from "antd";
 import { Controller } from "react-hook-form";
 
-type AppInputProps = {
-  type: string;
+type AppTimePickerProps = {
   name: string;
   label?: string;
   placeholder?: string;
-  disabled?: boolean;
 };
 
-const AppInput = ({
-  type,
-  name,
-  label,
-  placeholder,
-  disabled = false,
-}: AppInputProps) => {
+const AppTimePicker = ({ name, label, placeholder }: AppTimePickerProps) => {
   return (
     <div style={{ marginBottom: "20px" }}>
       <Controller
         name={name}
         render={({ field, fieldState: { error } }) => (
           <Form.Item label={label}>
-            <Input
+            <TimePicker
+              format={"HH:mm"}
               {...field}
-              type={type}
-              id={name}
               size="large"
+              style={{ width: "100%" }}
               placeholder={placeholder}
-              disabled={disabled}
             />
             {error && <small style={{ color: "red" }}> {error.message}</small>}
           </Form.Item>
@@ -38,4 +29,4 @@ const AppInput = ({
   );
 };
 
-export default AppInput;
+export default AppTimePicker;

@@ -1,13 +1,16 @@
 import { Form, Select } from "antd";
-import { Controller } from "react-hook-form";
+import { useEffect } from "react";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 
-type AppSelectProps = {
+type AppSelectWithWatchProps = {
   name: string;
   label?: string;
   placeholder?: string;
   mode?: "multiple" | undefined;
   disabled?: boolean;
   isLoading?: boolean;
+  onValueChange?: React.Dispatch<React.SetStateAction<string>>;
+  //   onValueChange: (value: string) => void;
   options:
     | {
         value: string;
@@ -17,15 +20,27 @@ type AppSelectProps = {
     | undefined;
 };
 
-const AppSelect = ({
+const AppSelectWithWatch = ({
   name,
   label,
   options,
   placeholder,
-  disabled = false,
+  onValueChange,
   isLoading = false,
   mode = undefined,
-}: AppSelectProps) => {
+}: AppSelectWithWatchProps) => {
+  const method = useFormContext();
+  const inputValue = useWatch({
+    control: method.control,
+    name,
+  });
+
+  useEffect(() => {
+    if (onValueChange) {
+      onValueChange(inputValue);
+    }
+  }, [inputValue, onValueChange]);
+
   return (
     <div style={{ marginBottom: "20px" }}>
       <Controller
@@ -40,7 +55,6 @@ const AppSelect = ({
               mode={mode}
               placeholder={placeholder}
               loading={isLoading}
-              disabled={disabled}
             />
             {error && <small style={{ color: "red" }}> {error.message}</small>}
           </Form.Item>
@@ -50,4 +64,4 @@ const AppSelect = ({
   );
 };
 
-export default AppSelect;
+export default AppSelectWithWatch;
