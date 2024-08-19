@@ -1,5 +1,8 @@
+import { AcademicSemesterProps } from "./academicManagement.types";
+
 export interface SemesterResgistrationProps {
-  academicSemester: string;
+  _id: string;
+  academicSemester: AcademicSemesterProps;
   status: string;
   startDate: string;
   endDate: string;

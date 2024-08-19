@@ -9,3 +9,9 @@ export const semesterStatusOption = [
   { value: "ONGOING", label: "Ongoing" },
   { value: "ENDED", label: "Ended" },
 ];
+
+export const RegistrationStatus = {
+  UPCOMING: "UPCOMING",
+  ONGOING: "ONGOING",
+  ENDED: "ENDED",
+} as const;
