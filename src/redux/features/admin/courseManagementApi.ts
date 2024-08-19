@@ -1,5 +1,9 @@
-import { ResponseReduxProps } from "../../../types";
-import { CourseProps } from "../../../types/courseManagement.types";
+import { QueryParamProps, ResponseReduxProps } from "../../../types";
+import {
+  CourseProps,
+  FacultyWithCourseProps,
+  SemesterResgistrationProps,
+} from "../../../types/courseManagement.types";
 import { baseApi } from "../../api/baseApi";
 
 const academicManagementApi = baseApi.injectEndpoints({
@@ -14,12 +18,43 @@ const academicManagementApi = baseApi.injectEndpoints({
       invalidatesTags: ["semester"],
     }),
     getAllResgisteredSemester: builder.query({
-      query: () => ({
-        url: "/semester-registrations",
-        method: "GET",
-      }),
-      providesTags: ["semester"],
+      // query: () => ({
+      //   url: "/semester-registrations",
+      //   method: "GET",
+      // }),
+      // query: (args) => {
+      //   const params = new URLSearchParams();
+      //   if (args) {
+      //     args.forEach((item: QueryParamProps) => {
+      //       params.append(item.name, item.value as string);
+      //     });
+      //   }
+      //   return {
+      //     url: "/semester-registrations",
+      //     method: "GET",
+      //     params,
+      //   };
+
+      // },
+
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: QueryParamProps) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+        return { url: "/semester-registrations", method: "GET", params };
+      },
+      transformResponse: (
+        response: ResponseReduxProps<SemesterResgistrationProps[]>
+      ) => {
+        return {
+          data: response.data,
+        };
+      },
     }),
+
     updateSemesterResgistration: builder.mutation({
       query: (args) => ({
         url: `/semester-registrations/${args.id}`,
@@ -58,6 +93,26 @@ const academicManagementApi = baseApi.injectEndpoints({
         body: args.data,
       }),
     }),
+
+    getFacultiesWithCourse: builder.query({
+      query: (courseId) => {
+        return { url: `/courses/${courseId}/get-faculties`, method: "GET" };
+      },
+      transformResponse: (
+        response: ResponseReduxProps<FacultyWithCourseProps>
+      ) => {
+        return response.data;
+      },
+    }),
+
+    // Offered courses
+    createOfferedCourse: builder.mutation({
+      query: (data) => ({
+        url: "/offered-courses",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -68,4 +123,6 @@ export const {
   useCreateCourseMutation,
   useGetAllCoursesQuery,
   useAssignCourseToFacultiesMutation,
+  useGetFacultiesWithCourseQuery,
+  useCreateOfferedCourseMutation,
 } = academicManagementApi;

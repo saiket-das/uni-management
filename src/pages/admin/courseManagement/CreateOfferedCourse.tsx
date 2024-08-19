@@ -2,85 +2,124 @@ import { Button, Col, Flex, Row } from "antd";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import AppForm from "../../../components/form/AppForm";
 import AppSelectWithWatch from "../../../components/form/AppSelectWithWatch";
-import AppInput from "../../../components/form/AppInput";
-import { useGetAllCoursesQuery } from "../../../redux/features/admin/courseManagementApi";
+import AppSelect from "../../../components/form/AppSelect";
+import AppTimePicker from "../../../components/form/AppTimePicker";
+import {
+  useCreateOfferedCourseMutation,
+  useGetAllCoursesQuery,
+  useGetAllResgisteredSemesterQuery,
+  useGetFacultiesWithCourseQuery,
+} from "../../../redux/features/admin/courseManagementApi";
 import {
   useGetAcademicDepartmentsQuery,
   useGetAcademicFacultiesQuery,
 } from "../../../redux/features/admin/academicManagementApi";
 import { useState } from "react";
-import AppSelect from "../../../components/form/AppSelect";
-import { useGetAllFacultiesQuery } from "../../../redux/features/admin/userManagementApi";
-import AppTimePicker from "../../../components/form/AppTimePicker";
+import { formatToOptions } from "../../../utils/formatToOptions";
+import { dayOptions } from "../../../constants/days";
+import { sectionOptions } from "../../../constants/section";
+import { OfferedCourseProps } from "../../../types/courseManagement.types";
+import { ResponseProps } from "../../../types";
+import { toast } from "sonner";
+import AppInput from "../../../components/form/AppInput";
+import { convertToHHMMFormat } from "../../../utils/convertToHHMMFormat";
 
 const CreateOfferedCourse = () => {
   const [courseId, setCourseId] = useState("");
 
+  const { data: offeredCourseData } = useGetAllCoursesQuery(undefined);
+  const { data: facultiesData, isFetching: facultiesFetching } =
+    useGetFacultiesWithCourseQuery(courseId, {
+      skip: !courseId,
+    });
+  const { data: registeredSemesterData } = useGetAllResgisteredSemesterQuery(
+    [{ name: "status", value: "UPCOMING" }],
+    { skip: !courseId }
+  );
+  const { data: academicFacultyData } = useGetAcademicFacultiesQuery(
+    undefined,
+    { skip: !courseId }
+  );
+  const { data: academicDepartmentData } = useGetAcademicDepartmentsQuery(
+    undefined,
+    { skip: !courseId }
+  );
+
+  const [createOfferedCourse, { isLoading }] = useCreateOfferedCourseMutation();
+
   // Courses
-  const { data: courseData } = useGetAllCoursesQuery(undefined);
-  const courseOptions = courseData?.data?.map((item) => ({
+  const courseOptions = offeredCourseData?.data?.map((item) => ({
     value: item._id,
     label: `${item.title}`,
   }));
 
-  const { data: facultyData } = useGetAllFacultiesQuery(undefined);
-  const facultyOptions = facultyData?.data?.map((item) => ({
-    value: item._id,
-    label: `${item.name}`,
-  }));
+  // Faculties with course
+  let facultiesOptions;
+  if (facultiesData) {
+    facultiesOptions = formatToOptions(
+      facultiesData.faculties,
+      "_id",
+      (item) => `${item.name.firstName} ${item.name.lastName}`
+    );
+  }
+
+  // Registered semester
+  let registeredSemesterOption;
+  if (registeredSemesterData?.data) {
+    registeredSemesterOption = formatToOptions(
+      registeredSemesterData?.data,
+      "_id",
+      (item) => `${item.academicSemester.name} ${item.academicSemester.year}`
+    );
+  }
 
   // Academic faculties
-  const { data: academicFacultyData } = useGetAcademicFacultiesQuery(undefined);
-  const academicFacultyOptions = academicFacultyData?.data?.map((item) => ({
-    value: item._id,
-    label: item.name,
-  }));
+  let academicFacultyOptions;
+  if (academicFacultyData?.data) {
+    academicFacultyOptions = formatToOptions(
+      academicFacultyData.data,
+      "_id",
+      (item) => `${item.name}`
+    );
+  }
 
   // Academic departments
-  const { data: academicDepartmentsData } =
-    useGetAcademicDepartmentsQuery(undefined);
-  const academicDepartmentOptions = academicDepartmentsData?.data?.map(
-    (item) => ({
-      value: item._id,
-      label: item.name,
-    })
-  );
-
-  console.log(courseId);
+  let academicDepartmentOptions;
+  if (academicDepartmentData?.data) {
+    academicDepartmentOptions = formatToOptions(
+      academicDepartmentData.data,
+      "_id",
+      (item) => `${item.name}`
+    );
+  }
 
   // Create a new course
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
-    // const toastId = "Create new course";
-    // const courseData = {
-    //   course: {
-    //     ...data,
-    //     code: Number(data.code),
-    //     credits: Number(data.credits),
-    //     isDeleted: false,
-    //     preRequisiteCourses: data.preRequisiteCourses
-    //       ? data.preRequisiteCourses.map((item: string) => ({
-    //           course: item,
-    //           isDeleted: false,
-    //         }))
-    //       : [],
-    //   },
-    // };
-    // try {
-    //   const res = (await createCourse(
-    //     courseData
-    //   )) as ResponseProps<CourseProps>;
-    //   if (res.error) {
-    //     toast.error(res.error.data.message, { id: toastId });
-    //   } else {
-    //     toast.success("Course created successfully!", {
-    //       id: toastId,
-    //       duration: 2000,
-    //     });
-    //   }
-    // } catch (err) {
-    //   toast.error("Something went wrong", { id: toastId, duration: 2000 });
-    // }
+    // console.log(data);
+    const toastId = "Create new offered course";
+    const offeredCourseData = {
+      ...data,
+      maxCapacity: Number(data.maxCapacity),
+      startTime: convertToHHMMFormat(data.startTime),
+      endTime: convertToHHMMFormat(data.endTime),
+    };
+
+    try {
+      const res = (await createOfferedCourse(
+        offeredCourseData
+      )) as ResponseProps<OfferedCourseProps>;
+      if (res.error) {
+        console.log(res.error);
+        toast.error(res.error.data.message, { id: toastId });
+      } else {
+        toast.success("Offered course created successfully!", {
+          id: toastId,
+          duration: 2000,
+        });
+      }
+    } catch (err) {
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+    }
   };
 
   return (
@@ -103,19 +142,22 @@ const CreateOfferedCourse = () => {
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
               <AppSelect
-                disabled={!courseId}
                 name="faculty"
                 label="Faculty"
-                options={facultyOptions}
+                options={facultiesOptions}
                 placeholder="Choose faculty"
+                disabled={!courseId}
+                isLoading={facultiesFetching}
+                // value={}
               />
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
               <AppSelect
                 name="semesterRegistration"
                 label="Registered semester"
-                options={academicFacultyOptions}
+                options={registeredSemesterOption}
                 placeholder="Choose registered semester"
+                disabled={!courseId}
               />
             </Col>
 
@@ -123,8 +165,9 @@ const CreateOfferedCourse = () => {
               <AppSelect
                 name="academicFaculty"
                 label="Academic faculty"
-                options={academicDepartmentOptions}
+                options={academicFacultyOptions}
                 placeholder="Choose academic faculty"
+                disabled={!courseId}
               />
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
@@ -133,36 +176,45 @@ const CreateOfferedCourse = () => {
                 label="Academic department"
                 options={academicDepartmentOptions}
                 placeholder="Choose academic department"
+                disabled={!courseId}
               />
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
-              <AppInput
-                disabled={!courseId}
-                type="number"
+              <AppSelect
                 name="section"
                 label="Section"
-                placeholder="Enter section"
+                options={sectionOptions}
+                placeholder="Choose a section"
+                disabled={!courseId}
               />
             </Col>
 
-            <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
+            <Col span={24} lg={{ span: 12 }} md={{ span: 12 }}>
               <AppSelect
                 name="days"
                 label="Days"
                 mode="multiple"
-                options={courseOptions}
+                options={dayOptions}
                 placeholder="Choose days"
               />
             </Col>
+            <Col span={24} lg={{ span: 12 }} md={{ span: 12 }}>
+              <AppInput
+                type="number"
+                name="maxCapacity"
+                label="Maximum capacity"
+                placeholder="Enter maximum capacity"
+              />
+            </Col>
 
-            <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
+            <Col span={24} lg={{ span: 12 }} md={{ span: 12 }}>
               <AppTimePicker
                 name="startTime"
                 label="Start time"
                 placeholder="Select start time"
               />
             </Col>
-            <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
+            <Col span={24} lg={{ span: 12 }} md={{ span: 12 }}>
               <AppTimePicker
                 name="endTime"
                 label="End time"
@@ -175,11 +227,10 @@ const CreateOfferedCourse = () => {
             htmlType="submit"
             style={{ width: "100%" }}
             size="large"
-            // loading={isLoading}
+            loading={isLoading}
             iconPosition="start"
           >
-            {/* {isLoading ? "Loading..." : "Submit"} */}
-            Submit
+            {isLoading ? "Loading..." : "Submit"}
           </Button>
         </AppForm>
       </Col>

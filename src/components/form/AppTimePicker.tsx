@@ -7,6 +7,8 @@ type AppTimePickerProps = {
   placeholder?: string;
 };
 
+const format = "HH:mm";
+
 const AppTimePicker = ({ name, label, placeholder }: AppTimePickerProps) => {
   return (
     <div style={{ marginBottom: "20px" }}>
@@ -15,11 +17,16 @@ const AppTimePicker = ({ name, label, placeholder }: AppTimePickerProps) => {
         render={({ field, fieldState: { error } }) => (
           <Form.Item label={label}>
             <TimePicker
-              format={"HH:mm"}
+              format={format}
               {...field}
               size="large"
               style={{ width: "100%" }}
               placeholder={placeholder}
+
+              // onChange={(time) =>
+              //   field.onChange(time ? time.format("HH:mm") : "")
+              // }
+              // onChange={(time, timeString) => field.onChange(timeString)}
             />
             {error && <small style={{ color: "red" }}> {error.message}</small>}
           </Form.Item>
