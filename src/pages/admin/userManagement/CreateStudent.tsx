@@ -83,7 +83,6 @@ const CreateStudent = () => {
       const res = (await createStudent(
         formData
       )) as ResponseProps<StudentProps>;
-      console.log(res);
       if (res.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {

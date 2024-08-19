@@ -1,13 +1,17 @@
+import { ResponseReduxProps } from "../../../types";
+import { CourseProps } from "../../../types/courseManagement.types";
 import { baseApi } from "../../api/baseApi";
 
 const academicManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // Registered semester
     createSemesterResgistration: builder.mutation({
       query: (data) => ({
         url: "/semester-registrations",
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["semester"],
     }),
     getAllResgisteredSemester: builder.query({
       query: () => ({
@@ -24,6 +28,28 @@ const academicManagementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["semester"],
     }),
+
+    // Courses
+    createCourse: builder.mutation({
+      query: (data) => ({
+        url: "/courses",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["course"],
+    }),
+    getAllCourses: builder.query({
+      query: () => {
+        return { url: "/courses", method: "GET" };
+      },
+      transformResponse: (response: ResponseReduxProps<CourseProps[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+      providesTags: ["course"],
+    }),
   }),
 });
 
@@ -31,4 +57,6 @@ export const {
   useCreateSemesterResgistrationMutation,
   useGetAllResgisteredSemesterQuery,
   useUpdateSemesterResgistrationMutation,
+  useCreateCourseMutation,
+  useGetAllCoursesQuery,
 } = academicManagementApi;
