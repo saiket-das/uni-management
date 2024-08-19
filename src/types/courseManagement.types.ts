@@ -41,3 +41,10 @@ export interface OfferedCourseProps {
   startTime: string;
   endTime: string;
 }
+
+export interface FacultyWithCourseProps {
+  _id: string;
+  __v: number;
+  course: string;
+  faculties: FacultyProps[];
+}

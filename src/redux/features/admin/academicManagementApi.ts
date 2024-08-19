@@ -61,10 +61,7 @@ const academicManagementApi = baseApi.injectEndpoints({
       transformResponse: (
         response: ResponseReduxProps<AcademicDepartmentProps[]>
       ) => {
-        return {
-          data: response.data,
-          meta: response.meta,
-        };
+        return response;
       },
     }),
   }),
