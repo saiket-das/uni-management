@@ -1,5 +1,8 @@
 import { QueryParamProps, ResponseReduxProps } from "../../../types";
-import { StudentProps } from "../../../types/userManagement.types";
+import {
+  FacultyProps,
+  StudentProps,
+} from "../../../types/userManagement.types";
 import { baseApi } from "../../api/baseApi";
 
 const userManagementApi = baseApi.injectEndpoints({
@@ -68,6 +71,30 @@ const userManagementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["student"],
     }),
+
+    getAllFaculties: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: QueryParamProps) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+
+        return {
+          url: "/faculties",
+          method: "GET",
+          params,
+        };
+      },
+      transformResponse: (response: ResponseReduxProps<FacultyProps[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+      providesTags: ["faculty"],
+    }),
   }),
 });
 
@@ -78,4 +105,5 @@ export const {
   useGetAllStudentsQuery,
   useGetStudentByIdQuery,
   useDeleteStudentByIdMutation,
+  useGetAllFacultiesQuery,
 } = userManagementApi;

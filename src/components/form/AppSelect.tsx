@@ -7,6 +7,7 @@ type AppSelectProps = {
   placeholder?: string;
   mode?: "multiple" | undefined;
   disabled?: boolean;
+  isLoading?: boolean;
   options:
     | {
         value: string;
@@ -20,8 +21,9 @@ const AppSelect = ({
   name,
   label,
   options,
-  mode = undefined,
   placeholder,
+  isLoading = false,
+  mode = undefined,
 }: AppSelectProps) => {
   return (
     <div style={{ marginBottom: "20px" }}>
@@ -36,6 +38,7 @@ const AppSelect = ({
               size="large"
               mode={mode}
               placeholder={placeholder}
+              loading={isLoading}
             />
             {error && <small style={{ color: "red" }}> {error.message}</small>}
           </Form.Item>
