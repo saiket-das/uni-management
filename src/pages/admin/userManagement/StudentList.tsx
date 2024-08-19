@@ -29,11 +29,7 @@ const StudentList = () => {
   const [params, setParams] = useState<QueryParamProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {
-    data: studentsData,
-    isFetching,
-    refetch,
-  } = useGetAllStudentsQuery([
+  const { data: studentsData, isFetching } = useGetAllStudentsQuery([
     { name: "limit", value: 2 },
     { name: "page", value: currentPage },
     { name: "sort", value: "id" },
@@ -53,7 +49,6 @@ const StudentList = () => {
       if (res.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {
-        refetch();
         toast.success("Student deleted successfully!", {
           id: toastId,
           duration: 2000,

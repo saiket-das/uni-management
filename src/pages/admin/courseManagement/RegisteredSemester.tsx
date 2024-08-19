@@ -7,15 +7,13 @@ import {
   Tag,
 } from "antd";
 import {
-  useGetAllSemesterResgistrationQuery,
+  useGetAllResgisteredSemesterQuery,
   useUpdateSemesterResgistrationMutation,
 } from "../../../redux/features/admin/courseManagementApi";
 import { SemesterResgistrationProps } from "../../../types/courseManagement.types";
 import moment from "moment";
 import { RegistrationStatus } from "../../../constants/semester";
 import { useState } from "react";
-import { ResponseProps } from "../../../types";
-import { toast } from "sonner";
 
 const items: MenuProps["items"] = [
   {
@@ -41,36 +39,19 @@ const RegisteredSemester = () => {
   const [semesterId, setSemesterId] = useState("");
 
   const { data: registeredSemesterData, isFetching: getFetching } =
-    useGetAllSemesterResgistrationQuery(undefined);
+    useGetAllResgisteredSemesterQuery(undefined);
 
   const [updateSemesterStatus, { isLoading: updateLoading }] =
     useUpdateSemesterResgistrationMutation();
   // Update status details
   const handleStatusUpdate = async (data: { key: string }) => {
-    const toastId = "Update registered semester status";
     const updateData = {
       id: semesterId,
       data: {
         status: data.key,
       },
     };
-    // console.log(updateData);
-    try {
-      const res = (await updateSemesterStatus(
-        updateData
-      )) as ResponseProps<SemesterResgistrationProps>;
-      console.log(res.error);
-      if (res.error) {
-        toast.error(res.error.data.message, { id: toastId });
-      } else {
-        toast.success("Registered Semester's status updated successfully!", {
-          id: toastId,
-          duration: 2000,
-        });
-      }
-    } catch (err) {
-      toast.error("Something went wrong", { id: toastId, duration: 2000 });
-    }
+    await updateSemesterStatus(updateData);
   };
 
   const menuProps = {
