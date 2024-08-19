@@ -5,6 +5,8 @@ type AppSelectProps = {
   name: string;
   label?: string;
   placeholder?: string;
+  mode?: "multiple" | undefined;
+  disabled?: boolean;
   options:
     | {
         value: string;
@@ -12,10 +14,15 @@ type AppSelectProps = {
         disabled?: boolean;
       }[]
     | undefined;
-  disabled?: boolean;
 };
 
-const AppSelect = ({ name, label, options, placeholder }: AppSelectProps) => {
+const AppSelect = ({
+  name,
+  label,
+  options,
+  mode = undefined,
+  placeholder,
+}: AppSelectProps) => {
   return (
     <div style={{ marginBottom: "20px" }}>
       <Controller
@@ -27,6 +34,7 @@ const AppSelect = ({ name, label, options, placeholder }: AppSelectProps) => {
               style={{ width: "100%" }}
               options={options}
               size="large"
+              mode={mode}
               placeholder={placeholder}
             />
             {error && <small style={{ color: "red" }}> {error.message}</small>}

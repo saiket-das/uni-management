@@ -34,7 +34,6 @@ const SemesterRegistration = () => {
       const res = (await createSemesterRegistration(
         semesterRegistrationData
       )) as ResponseProps<SemesterResgistrationProps>;
-      console.log(res.error);
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {

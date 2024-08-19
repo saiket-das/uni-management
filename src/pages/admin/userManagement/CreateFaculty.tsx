@@ -49,11 +49,10 @@ const CreateFaculty = () => {
       const res = (await createFaculty(
         formData
       )) as ResponseProps<FacultyProps>;
-      console.log(res);
       if (res.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {
-        toast.success("Student created successfully!", {
+        toast.success("Faculty created successfully!", {
           id: toastId,
           duration: 2000,
         });

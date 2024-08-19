@@ -9,3 +9,17 @@ export interface SemesterResgistrationProps {
   minCredit: number;
   maxCredit: number;
 }
+
+export interface CourseProps {
+  _id: string;
+  title: string;
+  prefix: string;
+  code: number;
+  credits: number;
+  isDeleted: boolean;
+  preRequisiteCourses: PreRequisiteCourseProps[];
+}
+
+export interface PreRequisiteCourseProps {
+  course: string;
+}
