@@ -51,6 +51,7 @@ const userManagementApi = baseApi.injectEndpoints({
           meta: response.meta,
         };
       },
+      providesTags: ["student"],
     }),
 
     getStudentById: builder.query({
@@ -65,6 +66,7 @@ const userManagementApi = baseApi.injectEndpoints({
         url: `/students/${studentId}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["student"],
     }),
   }),
 });
