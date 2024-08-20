@@ -8,6 +8,7 @@ import { verifyToken } from "../../utils/verifyToken";
 import { toast } from "sonner";
 import AppForm from "../../components/form/AppForm";
 import AppInput from "../../components/form/AppInput";
+import { ROUTES } from "../../constants/route";
 
 const Login = () => {
   // const defaultValues = {
@@ -45,13 +46,13 @@ const Login = () => {
         toast.error(res.error.data.message, { id: toastId });
       } else {
         if (res.data?.needsPasswordChange) {
-          navigate("/change-password");
+          navigate(ROUTES.change_passwrod);
           toast.warning("Default password needs to change!", {
             id: toastId,
             duration: 2000,
           });
         } else {
-          navigate(`/${user.role}/dashboard`);
+          navigate(ROUTES.role_dashboard(user?.role));
           toast.success("Login Successfully!", { id: toastId, duration: 2000 });
         }
       }

@@ -18,25 +18,6 @@ const academicManagementApi = baseApi.injectEndpoints({
       invalidatesTags: ["semester"],
     }),
     getAllResgisteredSemester: builder.query({
-      // query: () => ({
-      //   url: "/semester-registrations",
-      //   method: "GET",
-      // }),
-      // query: (args) => {
-      //   const params = new URLSearchParams();
-      //   if (args) {
-      //     args.forEach((item: QueryParamProps) => {
-      //       params.append(item.name, item.value as string);
-      //     });
-      //   }
-      //   return {
-      //     url: "/semester-registrations",
-      //     method: "GET",
-      //     params,
-      //   };
-
-      // },
-
       query: (args) => {
         const params = new URLSearchParams();
         if (args) {

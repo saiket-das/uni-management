@@ -16,26 +16,23 @@ const ChangePassword = () => {
 
   // Submit to change passord
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const toastId = toast.loading("Password change");
-    try {
-      const res = (await changePassword(data)) as ResponseProps<any>;
+    const toastId = "Change password";
 
-      console.log(res);
+    const res = (await changePassword(data)) as ResponseProps<any>;
 
-      if (res.data.success) {
-        toast.success("Password chnages Successfully!", {
-          id: toastId,
-          duration: 2000,
-        });
-        dispatch(logout());
-        navigate("/login");
-      } else if (res.error) {
-        toast.error(res.error?.data?.message, { id: toastId });
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+    console.log(res);
+
+    if (res?.data?.success) {
+      toast.success("Password chnages Successfully!", {
+        id: toastId,
+        duration: 2000,
+      });
+      dispatch(logout());
+      navigate("/login");
     }
+    // else {
+    //   toast.error(res.error?.data?.message, { id: toastId });
+    // }
   };
 
   return (
