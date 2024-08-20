@@ -16,7 +16,7 @@ import {
 } from "../../../redux/features/admin/academicManagementApi";
 import { useState } from "react";
 import { formatToOptions } from "../../../utils/formatToOptions";
-import { dayOptions } from "../../../constants/days";
+import { dayOptions } from "../../../constants/day";
 import { sectionOptions } from "../../../constants/section";
 import { OfferedCourseProps } from "../../../types/courseManagement.types";
 import { ResponseProps } from "../../../types";

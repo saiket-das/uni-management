@@ -15,11 +15,12 @@ import CreateCourse from "../pages/admin/courseManagement/CreateCourse";
 import Courses from "../pages/admin/courseManagement/Courses";
 import RegisteredSemester from "../pages/admin/courseManagement/RegisteredSemester";
 import CreateOfferedCourse from "../pages/admin/courseManagement/CreateOfferedCourse";
+import { ROUTES } from "../constants/route";
 
 export const adminPaths = [
   {
     name: "Dashboard",
-    path: "dashboard",
+    path: ROUTES.dashboard,
     element: <AdminDashboard />,
   },
   {
@@ -27,17 +28,17 @@ export const adminPaths = [
     children: [
       {
         name: "Create Academic Semester",
-        path: "create-academic-semester",
+        path: ROUTES.create_academic_semester,
         element: <CreateAcademicSemester />,
       },
       {
         name: "Create Academic Faculty",
-        path: "create-academic-faculty",
+        path: ROUTES.create_academic_faculty,
         element: <CreateAcademicFaculty />,
       },
       {
         name: "Create Academic Department",
-        path: "create-academic-department",
+        path: ROUTES.create_academic_department,
         element: <CreateAcademicDepartment />,
       },
       {

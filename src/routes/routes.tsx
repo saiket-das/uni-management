@@ -9,6 +9,7 @@ import { studentPaths } from "./student.routes";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
 import { USER_ROLE } from "../constants/role";
 import ChangePassword from "../pages/student/ChangePassword";
+import { ROUTES } from "../constants/route";
 
 const router = createBrowserRouter([
   {
@@ -18,8 +19,7 @@ const router = createBrowserRouter([
 
   // Admin routes
   {
-    path: "/admin",
-
+    path: ROUTES.admin,
     element: (
       <ProtectedRoute role={USER_ROLE.admin}>
         <App />
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
 
   // Faculty routes
   {
-    path: "/faculty",
+    path: ROUTES.faculty,
     element: (
       <ProtectedRoute role={USER_ROLE.faculty}>
         <App />
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
 
   // Student routes
   {
-    path: "/student",
+    path: ROUTES.student,
     element: (
       <ProtectedRoute role={USER_ROLE.student}>
         <App />
@@ -52,15 +52,15 @@ const router = createBrowserRouter([
 
   // Authentication
   {
-    path: "/register",
+    path: ROUTES.register,
     element: <Register />,
   },
   {
-    path: "/login",
+    path: ROUTES.login,
     element: <Login />,
   },
   {
-    path: "/change-password",
+    path: ROUTES.change_passwrod,
     element: <ChangePassword />,
   },
 ]);
