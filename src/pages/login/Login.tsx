@@ -35,7 +35,6 @@ const Login = () => {
       // Decode token & set user info and user token in local storage
       const token = res.data.accessToken;
       const user = verifyToken(token) as UserProps;
-
       dispatch(
         setUser({
           user: user,
@@ -45,11 +44,18 @@ const Login = () => {
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
-        toast.success("Login Successfully!", { id: toastId, duration: 2000 });
-        navigate(`/${user.role}/dashboard`);
+        if (res.data?.needsPasswordChange) {
+          navigate("/change-password");
+          toast.warning("Default password needs to change!", {
+            id: toastId,
+            duration: 2000,
+          });
+        } else {
+          navigate(`/${user.role}/dashboard`);
+          toast.success("Login Successfully!", { id: toastId, duration: 2000 });
+        }
       }
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
     }
   };
