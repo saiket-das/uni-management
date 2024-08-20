@@ -10,9 +10,13 @@ import AppForm from "../../components/form/AppForm";
 import AppInput from "../../components/form/AppInput";
 
 const Login = () => {
+  // const defaultValues = {
+  //   id: "A-0001",
+  //   password: "securepassword123",
+  // };
   const defaultValues = {
-    id: "A-0001",
-    password: "securepassword123",
+    id: "2026020002",
+    password: "defaultpass",
   };
 
   const [login] = useLoginMutation();
@@ -38,9 +42,14 @@ const Login = () => {
           token: res.data.accessToken,
         })
       );
-      toast.success("Login Successfully!", { id: toastId, duration: 2000 });
-      navigate(`/${user.role}/dashboard`);
+      if (res.error) {
+        toast.error(res.error.data.message, { id: toastId });
+      } else {
+        toast.success("Login Successfully!", { id: toastId, duration: 2000 });
+        navigate(`/${user.role}/dashboard`);
+      }
     } catch (error) {
+      console.log(error);
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
     }
   };
