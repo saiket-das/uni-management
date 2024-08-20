@@ -4,29 +4,32 @@ import { adminPaths } from "../../routes/admin.routes";
 import { facultyPaths } from "../../routes/faculty.routes";
 import { studentPaths } from "../../routes/student.routes";
 import { useAppSelector } from "../../redux/hooks";
-import { getCurrentUser } from "../../redux/features/auth/authSlice";
+import {
+  useCurrentToken,
+  UserProps,
+} from "../../redux/features/auth/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
+import { USER_ROLE } from "../../constants/role";
 
 const { Sider } = Layout;
 
-const userRole = {
-  ADMIN: "admin",
-  FACULTY: "faculty",
-  STUDENT: "student",
-};
-
 const Sidebar = () => {
-  const user = useAppSelector(getCurrentUser);
+  const token = useAppSelector(useCurrentToken);
+  let user;
+  if (token) {
+    user = verifyToken(token) as UserProps;
+  }
 
   let sidebarItems;
-  switch (user!.role) {
-    case userRole.ADMIN:
-      sidebarItems = sidebarItemsGenerator(adminPaths, userRole.ADMIN);
+  switch (user?.role) {
+    case USER_ROLE.admin:
+      sidebarItems = sidebarItemsGenerator(adminPaths, USER_ROLE.admin);
       break;
-    case userRole.FACULTY:
-      sidebarItems = sidebarItemsGenerator(facultyPaths, userRole.FACULTY);
+    case USER_ROLE.faculty:
+      sidebarItems = sidebarItemsGenerator(facultyPaths, USER_ROLE.faculty);
       break;
-    case userRole.STUDENT:
-      sidebarItems = sidebarItemsGenerator(studentPaths, userRole.STUDENT);
+    case USER_ROLE.student:
+      sidebarItems = sidebarItemsGenerator(studentPaths, USER_ROLE.student);
       break;
     default:
       break;

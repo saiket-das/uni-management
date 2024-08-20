@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export type UserPathProps = {
-  name: string;
+  name?: string;
   path?: string;
   element?: ReactNode;
   children?: UserPathProps[];
