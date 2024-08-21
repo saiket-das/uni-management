@@ -1,5 +1,8 @@
 import { QueryParamProps, ResponseReduxProps } from "../../../types";
-import { MyOfferedCourseProps } from "../../../types/studentCourseManagement.types";
+import {
+  EnrolledCourseProps,
+  MyOfferedCourseProps,
+} from "../../../types/studentCourseManagement.types";
 
 import { baseApi } from "../../api/baseApi";
 
@@ -38,8 +41,35 @@ const studentCourseManagementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["offered-course"],
     }),
+
+    getMyAllEnrolledCourse: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: QueryParamProps) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+        return {
+          url: "/enrolled-courses/my-enrolled-courses",
+          method: "GET",
+          params,
+        };
+      },
+      transformResponse: (
+        response: ResponseReduxProps<EnrolledCourseProps[]>
+      ) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetMyAllOfferedCourseQuery, useEnrollCourseMutation } =
-  studentCourseManagementApi;
+export const {
+  useGetMyAllOfferedCourseQuery,
+  useEnrollCourseMutation,
+  useGetMyAllEnrolledCourseQuery,
+} = studentCourseManagementApi;
