@@ -8,7 +8,7 @@ import { facultyPaths } from "./faculty.routes";
 import { studentPaths } from "./student.routes";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
 import { USER_ROLE } from "../constants/role";
-import ChangePassword from "../pages/student/ChangePassword";
+import ChangePassword from "../pages/login/ChangePassword";
 import { ROUTES } from "../constants/route";
 
 const router = createBrowserRouter([

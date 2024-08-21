@@ -30,6 +30,7 @@ export interface PreRequisiteCourseProps {
 }
 
 export interface OfferedCourseProps {
+  _id: string;
   semesterRegistration: SemesterResgistrationProps;
   academicFaculty: AcademicFacultyProps;
   academicDepartment: AcademicDepartmentProps;
