@@ -16,20 +16,25 @@ import Courses from "../pages/admin/courseManagement/Courses";
 import RegisteredSemester from "../pages/admin/courseManagement/RegisteredSemester";
 import CreateOfferedCourse from "../pages/admin/courseManagement/CreateOfferedCourse";
 import { ROUTES } from "../constants/route";
+import { DashboardFilled } from "@ant-design/icons";
+import { BookOpen, LayoutDashboard, School, UserRound } from "lucide-react";
 
 export const adminPaths = [
   {
     name: "Dashboard",
     path: ROUTES.dashboard,
     element: <AdminDashboard />,
+    icon: <LayoutDashboard size={16} />,
   },
   {
     name: "Academic Management",
+    icon: <School size={16} />,
     children: [
       {
         name: "Create Academic Semester",
         path: ROUTES.create_academic_semester,
         element: <CreateAcademicSemester />,
+        icon: <DashboardFilled />,
       },
       {
         name: "Create Academic Faculty",
@@ -60,6 +65,7 @@ export const adminPaths = [
   },
   {
     name: "User Management",
+    icon: <UserRound size={16} />,
     children: [
       {
         name: "Create Student",
@@ -87,9 +93,9 @@ export const adminPaths = [
       },
     ],
   },
-
   {
     name: "Course Management",
+    icon: <BookOpen size={16} />,
     children: [
       {
         name: "Semester Registration",

@@ -18,5 +18,8 @@ export const ROUTES = {
   offered_course: "offered-course",
   enrolled_course: "enrolled-course",
 
+  // FACULTY
+  my_course: "my-courses",
+
   role_dashboard: (role: string) => `/${role}/dashboard`,
 };

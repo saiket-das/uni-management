@@ -1,4 +1,5 @@
-import { Layout, Menu } from "antd";
+import { Flex, Layout, Menu } from "antd";
+import { GraduationCap } from "lucide-react";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import { adminPaths } from "../../routes/admin.routes";
 import { facultyPaths } from "../../routes/faculty.routes";
@@ -10,6 +11,7 @@ import {
 } from "../../redux/features/auth/authSlice";
 import { verifyToken } from "../../utils/verifyToken";
 import { USER_ROLE } from "../../constants/role";
+import { SidebarItemProps } from "../../types";
 
 const { Sider } = Layout;
 
@@ -20,7 +22,7 @@ const Sidebar = () => {
     user = verifyToken(token) as UserProps;
   }
 
-  let sidebarItems;
+  let sidebarItems: SidebarItemProps[] | undefined;
   switch (user?.role) {
     case USER_ROLE.admin:
       sidebarItems = sidebarItemsGenerator(adminPaths, USER_ROLE.admin);
@@ -32,6 +34,7 @@ const Sidebar = () => {
       sidebarItems = sidebarItemsGenerator(studentPaths, USER_ROLE.student);
       break;
     default:
+      sidebarItems = [];
       break;
   }
 
@@ -51,11 +54,15 @@ const Sidebar = () => {
           alignItems: "center",
         }}
       >
-        <h1>Uni Managment</h1>
+        <Flex align="center" gap={10}>
+          <GraduationCap size={36} />
+          <h1>Uni Managment</h1>
+        </Flex>
       </div>
       <Menu
         theme="dark"
         mode="inline"
+        // color="blue"
         defaultSelectedKeys={["4"]}
         items={sidebarItems}
       />
