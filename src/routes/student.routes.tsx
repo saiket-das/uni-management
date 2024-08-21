@@ -1,15 +1,16 @@
+import { ROUTES } from "../constants/route";
 import OfferedCourse from "../pages/student/OfferedCourse";
 import StudentDashboard from "../pages/student/StudentDashboard";
 
 export const studentPaths = [
   {
     name: "Dashboard",
-    path: "dashboard",
+    path: ROUTES.dashboard,
     element: <StudentDashboard />,
   },
   {
     name: "Offered Course",
-    path: "offered-course",
+    path: ROUTES.offered_course,
     element: <OfferedCourse />,
   },
 ];

@@ -33,7 +33,7 @@ const CreateOfferedCourse = () => {
       skip: !courseId,
     });
   const { data: registeredSemesterData } = useGetAllResgisteredSemesterQuery(
-    [{ name: "status", value: "UPCOMING" }],
+    [{ name: "status", value: "ONGOING" }],
     { skip: !courseId }
   );
   const { data: academicFacultyData } = useGetAcademicFacultiesQuery(
